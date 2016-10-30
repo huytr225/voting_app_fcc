@@ -9,9 +9,10 @@ var Poll = db.model('Poll', PollSchema);
 // Here we find an appropriate database to connect to, defaulting to
 // localhost if we don't find one.
 var uristring =
+'mongodb://huy:huy@ds135797.mlab.com:35797/polls_app'||
 process.env.MONGOLAB_URI ||
 process.env.MONGOHQ_URL ||
-"mongodb://" + process.env.IP + ":27017/polls_app";
+'mongodb://localhost/polls';
 
 // Makes connection asynchronously.  Mongoose will queue up database
 // operations and release them when the connection is complete.
