@@ -18,12 +18,9 @@
 	</ul>
 	<ul ng-switch-default>
 		<li ng-repeat="poll in polls | filter:query">
-			<a href="#/poll/{{poll._id}}" class="btn btn-default btn-block">{{poll.question}}</a>
+			<a href="#/poll/{{poll._id}}" class="btn btn-default btn-lg btn-block">{{poll.question}}</a>
 			<p></p>
 		</li>
 	</ul>
-</div>
-<div ng-show="loading">
-	<p>Now loading...</p>
 </div>
 <p>&nbsp;</p>

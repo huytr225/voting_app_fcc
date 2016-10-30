@@ -9,12 +9,21 @@ var Poll = db.model('Poll', PollSchema);
 // Here we find an appropriate database to connect to, defaulting to
 // localhost if we don't find one.
 var uristring =
+'mongodb://HuyGemini:Dinhuy225@ds135797.mlab.com:35797/polls_app'||
 process.env.MONGOLAB_URI ||
 process.env.MONGOHQ_URL ||
 'mongodb://localhost/polls';
 
+// Makes connection asynchronously.  Mongoose will queue up database
+// operations and release them when the connection is complete.
+mongoose.connect(uristring, function (err, res) {
+  if (err) {
+  console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+  } else {
+  console.log ('Succeeded connected to: ' + uristring);
+  }
+});
 
-db.on('error', console.error);
 
 exports.index = function(req, res) {
   res.sendfile(path + '/public/index.html');
@@ -25,10 +34,6 @@ exports.list = function(req, res) {
   Poll.find({}, 'question', function(error, polls) {
     res.json(polls);
   });
-  /*res.json([{
-            question: 'What the fuck',
-            choices: [{ text: 'ok' }, { text: 'hey' }]
-        }]);*/
 };
 
 // JSON API for getting a single poll
@@ -65,6 +70,7 @@ exports.create = function(req, res) {
   var reqBody = req.body,
       choices = reqBody.choices.filter(function(v) { return v.text != ''; }),
       pollObj = {question: reqBody.question, choices: choices};
+  
   var poll = new Poll(pollObj);
   poll.save(function(err, doc) {
     if(err || !doc) {
@@ -106,12 +112,3 @@ exports.vote = function(socket) {
   });
 };
 
-// Makes connection asynchronously.  Mongoose will queue up database
-// operations and release them when the connection is complete.
-mongoose.connect(uristring, function (err, res) {
-  if (err) {
-  console.log ('ERROR connecting to: ' + uristring + '. ' + err);
-  } else {
-  console.log ('Succeeded connected to: ' + uristring);
-  }
-});

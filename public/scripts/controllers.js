@@ -39,13 +39,9 @@ angular.module('polls')
         $scope.addChoice = function() {
             $scope.poll.choices.push({ text: '' });
         };
-        $scope.removeChoice = function() {
-            if($scope.poll.choices.length > 1){
-                $scope.poll.choices.pop();
-            } else {
-                alert("Không xóa được đâu đừng cố");
-            }
-        };
+        $scope.removeChoice = function(x) {
+            $scope.poll.choices.splice(x, 1);
+        }
         
         $scope.createPoll = function() {
             var poll = $scope.poll;
@@ -59,7 +55,7 @@ angular.module('polls')
                 }
                 if(choiceCount > 1) {
                     var newPoll = new Poll(poll);
-                    newPoll.$save(function(p, resp) {
+                    newPoll.$save(function(p, resp) {;
                       if(!p.error) { 
                         $location.path('polls');
                       } else {
